@@ -43,7 +43,11 @@ Step-by-Step:
 2. Use the `filter()` method to apply the callback to the array.
 3. Return the filtered result.
 */
+function filterProducts(products, criteria) {
+  return products.filter(criteria);
+}
 
+let availability = filterProducts(products, (product) => product.inStock);
 
 /*
 🔹 Task 2: Transform Product Names
@@ -55,6 +59,10 @@ Step-by-Step:
 2. Extract and transform the `name` property to uppercase.
 3. Store the result in a new variable.
 */
+
+let uppercase = products.map ( (product) => {
+  return { ...product, name: product.name.toUpperCase() }
+}); // is there a cleaner way to return an object variable in an anonymous function?
 
 
 /*
@@ -70,6 +78,15 @@ Step-by-Step:
 3. Use this returned function inside a `map()` call to apply discounts to all products.
 */
 
+function applyDiscount(discountPercent) {
+  return function (product) {
+
+    let newPrice = product.price - (product.price * (discountPercent / 100)); // Could this be more concise? Is there a built in method I can use?
+    return { ...product, price: newPrice };
+  }
+}
+
+let discounts = products.map( applyDiscount(30) );
 
 /*
 🔹 Task 4: Calculate Total Inventory Value
@@ -82,12 +99,14 @@ Step-by-Step:
 3. Store the total in a new variable.
 */
 
+let totalValue = products.reduce( (total, product) => total + product.price, 0 ); // that 0 messed me up for a while, it defines the initial value. It doesn't work without it.
+
 
 // ============================================
 // 🧪 Console Test Your Work
 // ============================================
 
-// console.log("Filtered products:", ...);
-// console.log("Uppercased names:", ...);
-// console.log("Discounted products:", ...);
-// console.log("Total value in stock:", ...);
+console.log("Filtered products:", availability);
+console.log("Uppercased names:", uppercase);
+console.log("Discounted products:", discounts);
+console.log("Total value in stock:", totalValue);
